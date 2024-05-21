@@ -1,0 +1,78 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+- name: releaseParametersFile
+  default: 'devops-project-release-parameters.yml'
+  type: string
+
+stages:
+- stage: Deploy_Dev
+  displayName: 'Deploy to Dev'
+  jobs:
+  - deployment: DeployWebApp_Dev
+    environment: 'Dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: ciPipeline
+            artifact: drop
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: ${{ parameters.releaseParametersFile.azureConnection }}
+              subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
+              location: ${{ parameters.releaseParametersFile.devLocation }}
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.parameters.json'
+              overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
+              deploymentMode: 'Incremental'
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
+              appName: '$(appName)'
+              package: '$(Pipeline.Workspace)/drop/target/*.war'
+              appType: 'webApp'
+
+- stage: Deploy_Prod
+  displayName: 'Deploy to Prod'
+  jobs:
+  - deployment: DeployWebApp_Prod
+    environment: 'Prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: ciPipeline
+            artifact: drop
+          - task: ManualValidation@0
+            displayName: 'Manual Validation'
+            inputs:
+              notifyUsers: |
+                email1@example.com
+                email2@example.com
+              instructions: 'Please validate if the deployment to Prod should proceed.'
+              onTimeout: 'reject'
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: ${{ parameters.releaseParametersFile.azureConnection }}
+              subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: ${{ parameters.releaseParametersFile.prodResourceGroupName }}
+              location: ${{ parameters.releaseParametersFile.prodLocation }}
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.parameters.json'
+              overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
+              deploymentMode: 'Incremental'

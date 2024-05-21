@@ -1,0 +1,37 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+- name: ciParametersFile
+  default: 'devops-project-ci-parameters.yml'
+  type: string
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'package'
+    options: '-DskipTests'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: true
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+  displayName: 'Maven package'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/target/*.war'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy files to staging directory'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Artifact: drop'
