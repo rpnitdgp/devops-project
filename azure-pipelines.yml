@@ -4,7 +4,7 @@ trigger:
 pool:
   name: 'selhostedravi'
   demands:
-    - agent.name -equals selfhostedagent
+    - agent.name -equals selhostedagent
 
 parameters:
 - name: ciParametersFile
