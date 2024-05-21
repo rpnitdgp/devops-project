@@ -59,8 +59,8 @@ stages:
             displayName: 'Manual Validation'
             inputs:
               notifyUsers: |
-                email1@example.com
-                email2@example.com
+                rp.nitdgp@gmail.com
+                singhrp08@yahoo.com
               instructions: 'Please validate if the deployment to Prod should proceed.'
               onTimeout: 'reject'
           - task: AzureResourceManagerTemplateDeployment@3
