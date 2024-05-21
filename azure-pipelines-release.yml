@@ -4,7 +4,9 @@ trigger:
       - '*'
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'selhostedravi'
+  demands:
+    - agent.name -equals selhostedagent
 
 parameters:
 - name: releaseParametersFile
