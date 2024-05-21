@@ -1,5 +1,12 @@
+resources:
+  repositories:
+  - repository: recipeapprepo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: rpnitdgp
+    name: rpnitdgp/recipeapp
+
 trigger:
-  - main
+  - master
 
 pool:
   name: 'selhostedravi'
@@ -21,6 +28,11 @@ steps:
     echo "##vso[task.prependpath]/usr/local/jdk-20.0.2/bin"
     java -version
   displayName: 'Set up Java 20.0.2'
+
+# Checkout code from Git repository
+- checkout: recipeapprepo
+  persistCredentials: true
+  clean: true
 
 # Clean the project
 - task: Maven@3
