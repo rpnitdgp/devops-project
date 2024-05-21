@@ -55,14 +55,6 @@ stages:
           steps:
           - download: ciPipeline
             artifact: drop
-          - task: ManualValidation@0
-            displayName: 'Manual Validation'
-            inputs:
-              notifyUsers: |
-                rp.nitdgp@gmail.com
-                singhrp08@yahoo.com
-              instructions: 'Please validate if the deployment to Prod should proceed.'
-              onTimeout: 'reject'
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
