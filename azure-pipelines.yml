@@ -6,7 +6,12 @@ resources:
     name: rpnitdgp/recipeapp
 
 trigger:
-  - master
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - "rpnitdgp/recipeapp/**"
 
 pool:
   name: 'selhostedravi'
