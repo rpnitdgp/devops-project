@@ -19,6 +19,10 @@ parameters:
   default: 'devops-project-release-parameters.yml'
   type: string
 
+variables:
+- name: azureProjConnection
+  value: 'testSubsSchipholProject' 
+
 stages:
 - stage: Deploy_Dev
   displayName: 'Deploy to Dev'
@@ -34,7 +38,7 @@ stages:
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
-              ConnectedServiceName: ${{ parameters.releaseParametersFile.azureConnection }}
+              ConnectedServiceName: ${{ variables.azureProjConnection }}
               subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
               action: 'Create Or Update Resource Group'
               resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
@@ -66,7 +70,7 @@ stages:
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
-              ConnectedServiceName: ${{ parameters.releaseParametersFile.azureConnection }}
+              ConnectedServiceName: ${{ variables.azureProjConnection }}
               subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
               action: 'Create Or Update Resource Group'
               resourceGroupName: ${{ parameters.releaseParametersFile.prodResourceGroupName }}
