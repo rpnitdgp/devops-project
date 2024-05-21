@@ -22,6 +22,8 @@ parameters:
 variables:
 - name: azureProjConnection
   value: 'testSubsSchipholProject' 
+- name: devLocation
+  value: 'West Europe'
 
 stages:
 - stage: Deploy_Dev
@@ -42,7 +44,7 @@ stages:
               subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
               action: 'Create Or Update Resource Group'
               resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
-              location: ${{ parameters.releaseParametersFile.devLocation }}
+              location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
               csmFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.parameters.json'
@@ -74,7 +76,7 @@ stages:
               subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
               action: 'Create Or Update Resource Group'
               resourceGroupName: ${{ parameters.releaseParametersFile.prodResourceGroupName }}
-              location: ${{ parameters.releaseParametersFile.prodLocation }}
+              location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
               csmFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.parameters.json'
