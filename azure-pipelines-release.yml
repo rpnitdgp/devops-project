@@ -1,3 +1,10 @@
+resources:
+  repositories:
+  - repository: recipeapprepo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: rpnitdgp
+    name: rpnitdgp/recipeapp
+
 trigger:
   branches:
     exclude:
@@ -23,8 +30,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: git://recipeapp
-            path: recipeapp # This will checkout the repository into a folder named 'recipeapp'
+          - checkout: recipeapprepo
           - download: ciPipeline
             artifact: drop
           - task: AzureResourceManagerTemplateDeployment@3
