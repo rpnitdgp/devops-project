@@ -91,29 +91,25 @@ steps:
     sonarQubeRunAnalysis: false
   displayName: 'Run Integration Tests'
 
-# Package the application, skipping tests as they have already been run
+# Maven package (build JAR file)
 - task: Maven@3
   inputs:
     mavenPomFile: '$(Build.SourcesDirectory)/recipeapp/pom.xml'
-    goals: 'package'
+    goals: 'package -DskipTests'
     options: '-DskipTests'
     mavenVersionOption: 'Custom'
-    mavenDirectory: '/usr/local/apache-maven-3.9.6'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '20.0.2'
-    jdkSourceOption: 'JDKVersion'
     mavenAuthenticateFeed: true
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
   displayName: 'Maven package'
 
-# Copy the WAR file to the staging directory
+# Copy the JAR file to the staging directory
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/recipeapp/target'
-    Contents: '*.war'
+    Contents: '*.jar'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
-  displayName: 'Copy WAR file to staging directory'
+  displayName: 'Copy JAR file to staging directory'
 
 # Copy the parameter files from the second repository to the staging directory
 - task: CopyFiles@2
