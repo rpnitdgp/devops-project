@@ -72,7 +72,7 @@ stages:
               resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.json'
+              csmFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azure-deploy.json'
               csmParametersFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
