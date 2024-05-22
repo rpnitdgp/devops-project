@@ -107,18 +107,26 @@ steps:
     sonarQubeRunAnalysis: false
   displayName: 'Maven package'
 
-# Copy files to the staging directory
+# Copy the WAR file to the staging directory
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)/recipeapp/target'
+    Contents: '*.war'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
+  displayName: 'Copy WAR file to staging directory'
+
+# Copy the parameter files from the second repository to the staging directory
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/devops-project/templates'
     Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)\drop'
-  displayName: 'Copy files to staging directory'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
+  displayName: 'Copy parameter files to staging directory'
 
 # Publish the build artifacts
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish Artifact: drop'
