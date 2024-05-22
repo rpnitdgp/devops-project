@@ -4,6 +4,10 @@ resources:
     type: github
     endpoint: rpnitdgp
     name: rpnitdgp/recipeapp
+  - repository: devopsprojectrepo # The name used to reference this repository in the checkout step
+    type: github
+    endpoint: rpnitdgp
+    name: rpnitdgp/devops-project
 
 trigger:
   branches:
@@ -38,6 +42,12 @@ steps:
 - checkout: recipeapprepo
   persistCredentials: true
   clean: true
+
+# Checkout ARM templates from the second repository
+- checkout: devopsprojectrepo
+  persistCredentials: true
+  clean: true
+  path: devops-project # Checkout to a specific path
 
 # Clean the project
 - task: Maven@3
@@ -100,7 +110,10 @@ steps:
 # Copy files to the staging directory
 - task: CopyFiles@2
   inputs:
-    contents: '**/target/*.war'
+    contents: |
+      **/target/*.war
+      devops-project/templates/azuredeploy.json
+      devops-project/templates/azuredeploy.parameters.json
     targetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy files to staging directory'
 
