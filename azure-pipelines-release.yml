@@ -30,6 +30,8 @@ variables:
   value : 'schipholInsights'
 - name: appName
   value: 'schipholAppNew'
+- name: azureConnection
+  value: 'testSubsSchipholProject'
 
 stages:
 - stage: Deploy_Dev
@@ -85,7 +87,7 @@ stages:
 
           - task: AzureWebApp@1
             inputs:
-              azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
+              azureSubscription: $(azureConnection)
               appName: '$(appName)'
               package: '$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
               appType: 'webApp'
@@ -144,7 +146,7 @@ stages:
 
           - task: AzureWebApp@1
             inputs:
-              azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
+              azureSubscription: $(azureConnection)
               appName: '$(appName)'
               package: '$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
               appType: 'webApp'
