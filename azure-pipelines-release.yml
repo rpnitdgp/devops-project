@@ -24,6 +24,10 @@ variables:
   value: 'testSubsSchipholProject' 
 - name: devLocation
   value: 'West Europe'
+- name: appServicePlanName
+  value : 'schipholAppServicePlan'
+- name: appInsightsName
+  value : 'schipholInsights'
 
 stages:
 - stage: Deploy_Dev
