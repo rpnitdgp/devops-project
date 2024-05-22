@@ -52,7 +52,7 @@ steps:
 # Clean the project
 - task: Maven@3
   inputs:
-    mavenPomFile: '$(Build.SourcesDirectory)/recipeapprepo/pom.xml'
+    mavenPomFile: '$(Build.SourcesDirectory)/recipeapp/pom.xml'
     goals: 'clean'
     mavenVersionOption: 'Custom'
     mavenDirectory: '/usr/local/apache-maven-3.9.6'
@@ -64,7 +64,7 @@ steps:
 # Run unit tests
 - task: Maven@3
   inputs:
-    mavenPomFile: '$(Build.SourcesDirectory)/recipeapprepo/pom.xml'
+    mavenPomFile: '$(Build.SourcesDirectory)/recipeapp/pom.xml'
     goals: 'test'
     mavenVersionOption: 'Custom'
     mavenDirectory: '/usr/local/apache-maven-3.9.6'
@@ -79,7 +79,7 @@ steps:
 # Run integration tests
 - task: Maven@3
   inputs:
-    mavenPomFile: '$(Build.SourcesDirectory)/recipeapprepo/pom.xml'
+    mavenPomFile: '$(Build.SourcesDirectory)/recipeapp/pom.xml'
     goals: 'verify'
     mavenVersionOption: 'Custom'
     mavenDirectory: '/usr/local/apache-maven-3.9.6'
@@ -94,7 +94,7 @@ steps:
 # Package the application, skipping tests as they have already been run
 - task: Maven@3
   inputs:
-    mavenPomFile: '$(Build.SourcesDirectory)/recipeapprepo/pom.xml'
+    mavenPomFile: '$(Build.SourcesDirectory)/recipeapp/pom.xml'
     goals: 'package'
     options: '-DskipTests'
     mavenVersionOption: 'Custom'
