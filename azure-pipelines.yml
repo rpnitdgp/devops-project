@@ -110,7 +110,7 @@ steps:
 # Copy files to the staging directory
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\templates'
+    SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)\drop'
   displayName: 'Copy files to staging directory'
