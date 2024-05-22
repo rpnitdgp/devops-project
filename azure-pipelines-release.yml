@@ -93,8 +93,9 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: ciPipeline
+          - download: current
             artifact: drop
+            displayName: 'Download Artifacts'
 
           - script: |
               echo "Listing root directory:"
@@ -127,11 +128,11 @@ stages:
               ConnectedServiceName: ${{ variables.azureProjConnection }}
               subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
               action: 'Create Or Update Resource Group'
-              resourceGroupName: ${{ parameters.releaseParametersFile.prodResourceGroupName }}
+              resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azure-deploy.parameters.json'
+              csmFile: '$(System.DefaultWorkingDirectory)/drop/azure-deploy.json'
+              csmParametersFile: '$(System.DefaultWorkingDirectory)/drop/azure-deploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
 
