@@ -40,18 +40,28 @@ stages:
 
           - script: |
               echo "Listing root directory:"
-              dir $(Pipeline.Workspace)
+              dir "$(Pipeline.Workspace)"
             displayName: 'List root directory'
 
           - script: |
+              echo "Listing _work directory:"
+              dir "$(Pipeline.Workspace)\.."
+            displayName: 'List _work directory'
+
+          - script: |
+              echo "Listing ciPipeline directory:"
+              dir "$(Pipeline.Workspace)\ciPipeline"
+            displayName: 'List ciPipeline directory'
+
+          - script: |
               echo "Listing drop directory:"
-              dir $(Pipeline.Workspace)\drop
+              dir "$(Pipeline.Workspace)\ciPipeline\drop"
             displayName: 'List drop directory'
 
           - script: |
-              echo "Listing recipeapp directory:"
-              dir $(Pipeline.Workspace)\drop\recipeapp\target
-            displayName: 'List recipeapp directory'
+              echo "Listing recipeapp target directory:"
+              dir "$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target"
+            displayName: 'List recipeapp target directory'
 
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
@@ -62,8 +72,8 @@ stages:
               resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)\drop\devops-project\templates\azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)\drop\devops-project\templates\azuredeploy.parameters.json'
+              csmFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
 
@@ -71,7 +81,7 @@ stages:
             inputs:
               azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
               appName: '$(appName)'
-              package: '$(Pipeline.Workspace)\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
+              package: '$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
               appType: 'webApp'
 
 - stage: Deploy_Prod
@@ -88,18 +98,28 @@ stages:
 
           - script: |
               echo "Listing root directory:"
-              dir $(Pipeline.Workspace)
+              dir "$(Pipeline.Workspace)"
             displayName: 'List root directory'
 
           - script: |
+              echo "Listing _work directory:"
+              dir "$(Pipeline.Workspace)\.."
+            displayName: 'List _work directory'
+
+          - script: |
+              echo "Listing ciPipeline directory:"
+              dir "$(Pipeline.Workspace)\ciPipeline"
+            displayName: 'List ciPipeline directory'
+
+          - script: |
               echo "Listing drop directory:"
-              dir $(Pipeline.Workspace)\drop
+              dir "$(Pipeline.Workspace)\ciPipeline\drop"
             displayName: 'List drop directory'
 
           - script: |
-              echo "Listing recipeapp directory:"
-              dir $(Pipeline.Workspace)\drop\recipeapp\target
-            displayName: 'List recipeapp directory'
+              echo "Listing recipeapp target directory:"
+              dir "$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target"
+            displayName: 'List recipeapp target directory'
 
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
@@ -110,8 +130,8 @@ stages:
               resourceGroupName: ${{ parameters.releaseParametersFile.prodResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)\drop\devops-project\templates\azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)\drop\devops-project\templates\azuredeploy.parameters.json'
+              csmFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)\ciPipeline\drop\devops-project\templates\azuredeploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
 
@@ -119,5 +139,5 @@ stages:
             inputs:
               azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
               appName: '$(appName)'
-              package: '$(Pipeline.Workspace)\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
+              package: '$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
               appType: 'webApp'
