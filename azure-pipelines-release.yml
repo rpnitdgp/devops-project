@@ -28,6 +28,8 @@ variables:
   value : 'schipholAppServicePlan'
 - name: appInsightsName
   value : 'schipholInsights'
+- name: appName
+  value: 'schipholAppNew'
 
 stages:
 - stage: Deploy_Dev
