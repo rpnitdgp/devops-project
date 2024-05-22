@@ -118,7 +118,7 @@ steps:
 # Copy the parameter files from the second repository to the staging directory
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.BinariesDirectory)/devops-project/templates'
+    SourceFolder: '$(Build.SourcesDirectory)/../devops-project/templates'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
   displayName: 'Copy parameter files to staging directory'
