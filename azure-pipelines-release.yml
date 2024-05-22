@@ -4,7 +4,7 @@ resources:
     source: rpnitdgp.devops-project-ci-pipeline
     trigger:
       branches:
-        include: 
+        include:
           - master
 
 trigger: none
@@ -37,6 +37,12 @@ stages:
           steps:
           - download: ciPipeline
             artifact: drop
+
+          - script: |
+              echo "Listing downloaded files:"
+              ls -R $(Pipeline.Workspace)/drop
+            displayName: 'List downloaded files'
+
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
@@ -46,8 +52,8 @@ stages:
               resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.parameters.json'
+              csmFile: '$(Pipeline.Workspace)/drop/devops-project/templates/azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/devops-project/templates/azuredeploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
 
@@ -55,7 +61,7 @@ stages:
             inputs:
               azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
               appName: '$(appName)'
-              package: '$(Pipeline.Workspace)/drop/target/*.war'
+              package: '$(Pipeline.Workspace)/drop/recipeapp/target/recipeapp-0.0.1-SNAPSHOT.war'
               appType: 'webApp'
 
 - stage: Deploy_Prod
@@ -69,6 +75,12 @@ stages:
           steps:
           - download: ciPipeline
             artifact: drop
+
+          - script: |
+              echo "Listing downloaded files:"
+              ls -R $(Pipeline.Workspace)/drop
+            displayName: 'List downloaded files'
+
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'
@@ -78,7 +90,14 @@ stages:
               resourceGroupName: ${{ parameters.releaseParametersFile.prodResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/drop/templates/azuredeploy.parameters.json'
+              csmFile: '$(Pipeline.Workspace)/drop/devops-project/templates/azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/devops-project/templates/azuredeploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: ${{ parameters.releaseParametersFile.azureConnection }}
+              appName: '$(appName)'
+              package: '$(Pipeline.Workspace)/drop/recipeapp/target/recipeapp-0.0.1-SNAPSHOT.war'
+              appType: 'webApp'
