@@ -39,9 +39,19 @@ stages:
             artifact: drop
 
           - script: |
-              echo "Listing downloaded files:"
+              echo "Listing root directory:"
+              dir $(Pipeline.Workspace)
+            displayName: 'List root directory'
+
+          - script: |
+              echo "Listing drop directory:"
               dir $(Pipeline.Workspace)\drop
-            displayName: 'List downloaded files'
+            displayName: 'List drop directory'
+
+          - script: |
+              echo "Listing recipeapp directory:"
+              dir $(Pipeline.Workspace)\drop\recipeapp\target
+            displayName: 'List recipeapp directory'
 
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
@@ -77,9 +87,19 @@ stages:
             artifact: drop
 
           - script: |
-              echo "Listing downloaded files:"
+              echo "Listing root directory:"
+              dir $(Pipeline.Workspace)
+            displayName: 'List root directory'
+
+          - script: |
+              echo "Listing drop directory:"
               dir $(Pipeline.Workspace)\drop
-            displayName: 'List downloaded files'
+            displayName: 'List drop directory'
+
+          - script: |
+              echo "Listing recipeapp directory:"
+              dir $(Pipeline.Workspace)\drop\recipeapp\target
+            displayName: 'List recipeapp directory'
 
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
