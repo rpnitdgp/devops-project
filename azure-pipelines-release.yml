@@ -89,8 +89,8 @@ stages:
             inputs:
               azureSubscription: $(azureConnection)
               appName: '$(appName)'
-              package: '$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
-              appType: 'webApp'
+              package: '$(Pipeline.Workspace)/ciPipeline/drop/*.jar' # Update the package path to point to the JAR file
+              appType: 'javaContainer' # Set appType to 'javaContainer' for deploying JAR files
 
 - stage: Deploy_Prod
   displayName: 'Deploy to Prod'
