@@ -110,11 +110,9 @@ steps:
 # Copy files to the staging directory
 - task: CopyFiles@2
   inputs:
-    contents: |
-      **/target/*.war
-      devops-project/templates/azuredeploy.json
-      devops-project/templates/azuredeploy.parameters.json
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)\templates'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\drop'
   displayName: 'Copy files to staging directory'
 
 # Publish the build artifacts
