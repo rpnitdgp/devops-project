@@ -148,5 +148,5 @@ stages:
             inputs:
               azureSubscription: $(azureConnection)
               appName: '$(appName)'
-              package: '$(Pipeline.Workspace)\ciPipeline\drop\recipeapp\target\recipeapp-0.0.1-SNAPSHOT.war'
-              appType: 'webApp'
+              package: '$(Pipeline.Workspace)/ciPipeline/drop/*.jar'
+              appType: 'javaContainer'
