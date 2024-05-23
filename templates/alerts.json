@@ -1,49 +1,150 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01-preview/resourceGroupDeploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "resources": [
-      {
-        "type": "Microsoft.Insights/metricAlerts",
-        "apiVersion": "2018-03-01",
-        "name": "highCpuUsageAlert",
-        "location": "global",
-        "properties": {
-          "severity": 2,
-          "enabled": true,
-          "scopes": [
-            "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
-          ],
-          "evaluationFrequency": "PT1M",
-          "windowSize": "PT5M",
-          "criteria": {
-            "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
-            "allOf": [
-              {
-                "name": "highCpuUsage",
-                "metricName": "CpuTime",
-                "metricNamespace": "microsoft.web/sites",
-                "operator": "GreaterThan",
-                "threshold": 80,
-                "timeAggregation": "Average"
-              }
-            ]
-          },
-          "autoMitigate": false,
-          "actions": [
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01-preview/resourceGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Insights/metricAlerts",
+      "apiVersion": "2018-03-01",
+      "name": "highCpuUsageAlert",
+      "location": "global",
+      "properties": {
+        "severity": 2,
+        "enabled": true,
+        "scopes": [
+          "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+          "allOf": [
             {
-              "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+              "name": "highCpuUsage",
+              "metricName": "CpuTime",
+              "metricNamespace": "microsoft.web/sites",
+              "operator": "GreaterThan",
+              "threshold": 80,
+              "timeAggregation": "Average"
             }
           ]
-        }
+        },
+        "autoMitigate": false,
+        "actions": [
+          {
+            "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+          }
+        ]
       }
-    ],
-    "parameters": {
-      "appName": {
-        "type": "string"
-      },
-      "actionGroupName": {
-        "type": "string"
+    },
+    {
+      "type": "Microsoft.Insights/metricAlerts",
+      "apiVersion": "2018-03-01",
+      "name": "highMemoryUsageAlert",
+      "location": "global",
+      "properties": {
+        "severity": 2,
+        "enabled": true,
+        "scopes": [
+          "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+          "allOf": [
+            {
+              "name": "highMemoryUsage",
+              "metricName": "MemoryWorkingSet",
+              "metricNamespace": "microsoft.web/sites",
+              "operator": "GreaterThan",
+              "threshold": 80,
+              "timeAggregation": "Average"
+            }
+          ]
+        },
+        "autoMitigate": false,
+        "actions": [
+          {
+            "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Insights/metricAlerts",
+      "apiVersion": "2018-03-01",
+      "name": "http5xxErrorsAlert",
+      "location": "global",
+      "properties": {
+        "severity": 2,
+        "enabled": true,
+        "scopes": [
+          "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+          "allOf": [
+            {
+              "name": "http5xxErrors",
+              "metricName": "Http5xx",
+              "metricNamespace": "microsoft.web/sites",
+              "operator": "GreaterThan",
+              "threshold": 5,
+              "timeAggregation": "Total"
+            }
+          ]
+        },
+        "autoMitigate": false,
+        "actions": [
+          {
+            "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Insights/metricAlerts",
+      "apiVersion": "2018-03-01",
+      "name": "http4xxErrorsAlert",
+      "location": "global",
+      "properties": {
+        "severity": 3,
+        "enabled": true,
+        "scopes": [
+          "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+          "allOf": [
+            {
+              "name": "http4xxErrors",
+              "metricName": "Http4xx",
+              "metricNamespace": "microsoft.web/sites",
+              "operator": "GreaterThan",
+              "threshold": 50,
+              "timeAggregation": "Total"
+            }
+          ]
+        },
+        "autoMitigate": false,
+        "actions": [
+          {
+            "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]"
+          }
+        ]
       }
     }
+  ],
+  "parameters": {
+    "appName": {
+      "type": "string"
+    },
+    "actionGroupName": {
+      "type": "string"
+    }
   }
-  
+}
