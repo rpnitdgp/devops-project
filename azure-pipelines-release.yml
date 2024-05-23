@@ -29,6 +29,8 @@ variables:
   value: 'schipholAppNew'
 - name: azureConnection
   value: 'testSubsSchipholProject'
+- name: 'actionGroupName'
+  value: 'schipholAlerts-ag'
 
 stages:
 - stage: Deploy_Dev
@@ -81,7 +83,7 @@ stages:
               csmParametersFile: '$(Pipeline.Workspace)/ciPipeline/drop/azure-deploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
-              
+
           - task: AzureResourceManagerTemplateDeployment@3
             inputs:
               deploymentScope: 'Resource Group'

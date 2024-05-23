@@ -10,9 +10,6 @@
       },
       "appInsightsName": {
         "value": "recipeapp-insights"
-      },
-      "actionGroupName": {
-        "value": "schipholAlerts-ag"
       }
     }
   }
