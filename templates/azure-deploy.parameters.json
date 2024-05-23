@@ -6,7 +6,7 @@
         "value": "recipeapp"
       },
       "appServicePlanName": {
-        "value": "recipeapp-service-plan"
+        "value": "schipholAppServicePlan"
       },
       "appInsightsName": {
         "value": "recipeapp-insights"
