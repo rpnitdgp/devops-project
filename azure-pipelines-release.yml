@@ -84,6 +84,18 @@ stages:
               csmParametersFile: '$(Pipeline.Workspace)/ciPipeline/drop/azure-deploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
               deploymentMode: 'Incremental'
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              ConnectedServiceName: ${{ variables.azureProjConnection }}
+              subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
+              location: ${{ variables.devLocation }}
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/ciPipeline/drop/templates/alert.json'
+              overrideParameters: '-appName "$(appName)" -actionGroupName "$(actionGroupName)"'
+              deploymentMode: 'Incremental'
 
           - task: AzureWebApp@1
             inputs:
@@ -142,6 +154,19 @@ stages:
               csmFile: '$(System.DefaultWorkingDirectory)/drop/azure-deploy.json'
               csmParametersFile: '$(System.DefaultWorkingDirectory)/drop/azure-deploy.parameters.json'
               overrideParameters: '-appName "$(appName)" -appServicePlanName "$(appServicePlanName)" -appInsightsName "$(appInsightsName)"'
+              deploymentMode: 'Incremental'
+
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              ConnectedServiceName: ${{ variables.azureProjConnection }}
+              subscriptionId: ${{ parameters.releaseParametersFile.subscriptionId }}
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
+              location: ${{ variables.devLocation }}
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/ciPipeline/drop/templates/alert.json'
+              overrideParameters: '-appName "$(appName)" -actionGroupName "$(actionGroupName)"'
               deploymentMode: 'Incremental'
 
           - task: AzureWebApp@1
