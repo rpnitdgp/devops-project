@@ -2,10 +2,7 @@ resources:
   pipelines:
   - pipeline: ciPipeline
     source: rpnitdgp.devops-project-ci-pipeline
-    trigger:
-      branches:
-        include:
-          - master
+    trigger: true
 
 trigger: none
 
