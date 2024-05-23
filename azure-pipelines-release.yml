@@ -93,7 +93,7 @@ stages:
               resourceGroupName: ${{ parameters.releaseParametersFile.devResourceGroupName }}
               location: ${{ variables.devLocation }}
               templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)/ciPipeline/drop/templates/alert.json'
+              csmFile: '$(Pipeline.Workspace)/ciPipeline/drop/alert.json'
               overrideParameters: '-appName "$(appName)" -actionGroupName "$(actionGroupName)"'
               deploymentMode: 'Incremental'
 
